@@ -3,7 +3,10 @@ name: Build CDN HTML to dist
 on:
   push:
     branches:
-      - master
+      - main
+
+permissions:
+  contents: write   
 
 jobs:
   build-dist:
@@ -12,6 +15,8 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          persist-credentials: true
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
