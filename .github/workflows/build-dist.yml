@@ -1,0 +1,32 @@
+name: Build CDN HTML to dist
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-dist:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Build CDN HTML
+        run: node scripts/build-cdn.js
+
+      - name: Commit dist output
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add dist
+          git commit -m "build: update dist CDN html" || echo "No changes"
+
+      - name: Push changes
+        run: git push
