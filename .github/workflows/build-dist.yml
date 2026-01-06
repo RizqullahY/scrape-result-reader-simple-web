@@ -3,7 +3,7 @@ name: Build CDN HTML to dist
 on:
   push:
     branches:
-      - main
+      - master
 
 permissions:
   contents: write   
