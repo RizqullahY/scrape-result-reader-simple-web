@@ -1,1 +1,3 @@
-### 1. FILE HTML 1 TEMPAT DIREKTORI DENGAN PICTURE PICTURE
+```bash
+npx @tailwindcss/cli -i ./src/input.css -o ./src/output.css --watch
+```

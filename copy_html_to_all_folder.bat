@@ -2,7 +2,7 @@
 setlocal
 
 set FILE_NAME=index-website.html
-set RAW_URL=https://raw.githubusercontent.com/RizqullahY/scrape-result-reader-simple-web/master/index-website.html
+set RAW_URL=https://raw.githubusercontent.com/RizqullahY/scrape-result-reader-simple-web/master/dist/index.html
 
 echo Downloading HTML...
 powershell -Command "Invoke-WebRequest '%RAW_URL%' -OutFile '%FILE_NAME%'"
