@@ -4,55 +4,114 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>V2 NIH BOY</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/RizqullahY/scrape-result-reader-simple-web/src/output.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/RizqullahY/scrape-result-reader-simple-web/src/output.css" />
+    <style>html, body {margin: 0;padding: 0;}</style>
   </head>
-  <body>
-    <div class="justify-center bg-slate-900">
-      <div class="sticky top-0 bg-white shadow-md p-4 z-10 text-center items-center">
+
+  <body class="m-0 p-0">
+    <div class="justify-center bg-slate-900 min-h-screen">
+
+      <!-- FLOATING TOGGLE -->
+      <button
+        id="toggle-navbar"
+        class="fixed top-3 left-3 z-50 px-3 py-2 bg-slate-600 text-white rounded-md hover:bg-slate-700 text-sm font-medium shadow-lg"
+      >
+        ☰
+      </button>
+
+      <!-- NAVBAR -->
+      <div
+        id="navbar"
+        class="sticky top-0 bg-white shadow-md p-4 z-10 text-center items-center transition-all duration-300"
+      >
         <div class="options flex items-center space-x-3 justify-center">
-          <button id="prev-chapter" class="px-3 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-800 text-sm font-medium">◀ Prev</button>
-          <button id="next-chapter" class="px-3 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-800 text-sm font-medium">Next ▶</button>
+
+          <button
+            id="prev-chapter"
+            class="px-3 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 text-sm font-medium"
+          >
+            ◀ Prev
+          </button>
+
+          <button
+            id="next-chapter"
+            class="px-3 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 text-sm font-medium"
+          >
+            Next ▶
+          </button>
 
           <div id="size-controls" class="flex items-center space-x-3"></div>
-          
+
           <div id="scroll-controls" class="flex items-center space-x-2">
-            <label for="scroll-speed" class="text-sm font-medium text-gray-700"
-                  >Auto Scroll:</label
-                >
-                <select
-                  id="scroll-speed"
-                  class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md"
-                >
-                  <option value="1">1</option>
-                  <option value="3" selected>3</option>
-                  <option value="5">5</option>
-                  <option value="10">10</option>
-                </select>
-                <button
-                  id="start-scroll"
-                  class="px-3 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 text-sm font-medium"
-                >
-                  Mulai
-                </button>
-                <button
-                  id="stop-scroll"
-                  class="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 text-sm font-medium"
-                  disabled
-                >
-                  Henti
-                </button>
-                <button id="fullscreen-button" class="px-3 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 text-sm font-medium">
-                    Fullscreen
-                </button>
+            <label for="scroll-speed" class="text-sm font-medium text-gray-700">
+              Auto Scroll:
+            </label>
+
+            <select
+              id="scroll-speed"
+              class="shadow-sm border-gray-300 rounded-md text-sm"
+            >
+              <option value="1">1</option>
+              <option value="3" selected>3</option>
+              <option value="5">5</option>
+              <option value="10">10</option>
+            </select>
+
+            <button
+              id="start-scroll"
+              class="px-3 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 text-sm font-medium"
+            >
+              Mulai
+            </button>
+
+            <button
+              id="stop-scroll"
+              class="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 text-sm font-medium"
+              disabled
+            >
+              Henti
+            </button>
+
+            <button
+              id="fullscreen-button"
+              class="px-3 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 text-sm font-medium"
+            >
+              Fullscreen
+            </button>
           </div>
         </div>
       </div>
+
+      <!-- CONTENT -->
       <div class="wrapper"></div>
     </div>
+
+    <!-- JS FILES -->
     <script src="https://cdn.jsdelivr.net/gh/RizqullahY/scrape-result-reader-simple-web/js/path-changer.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/RizqullahY/scrape-result-reader-simple-web/js/width-screen.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/RizqullahY/scrape-result-reader-simple-web/js/fullscreen.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/RizqullahY/scrape-result-reader-simple-web/js/autoscroll.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/RizqullahY/scrape-result-reader-simple-web/js/website.js"></script>
+
+    <!-- TOGGLE SCRIPT -->
+    <script>
+      const navbar = document.getElementById("navbar");
+      const toggleBtn = document.getElementById("toggle-navbar");
+
+      let hidden = false;
+
+      toggleBtn.addEventListener("click", () => {
+        hidden = !hidden;
+
+        if (hidden) {
+          navbar.style.transform = "translateY(-100%)";
+          navbar.style.opacity = "0";
+        } else {
+          navbar.style.transform = "translateY(0)";
+          navbar.style.opacity = "1";
+        }
+      });
+    </script>
   </body>
 </html>
