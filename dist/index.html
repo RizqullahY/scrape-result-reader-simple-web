@@ -4,114 +4,93 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>V2 NIH BOY</title>
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/RizqullahY/scrape-result-reader-simple-web/src/output.css" />
-    <style>html, body {margin: 0;padding: 0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   </head>
 
-  <body class="m-0 p-0">
-    <div class="justify-center bg-slate-900 min-h-screen">
+  <body class="m-0 p-0 bg-slate-900">
 
-      <!-- FLOATING TOGGLE -->
-      <button
-        id="toggle-navbar"
-        class="fixed top-3 left-3 z-50 px-3 py-2 bg-slate-600 text-white rounded-md hover:bg-slate-700 text-sm font-medium shadow-lg"
-      >
-        ☰
-      </button>
+    <!-- TOGGLE BUTTON (SELALU KELIHATAN) -->
+    <button
+      id="toggle-navbar"
+      class="fixed top-4 right-4 z-[10000]
+             px-3 py-2 bg-indigo-500 text-white rounded-md
+             hover:bg-indigo-600 text-sm font-medium"
+    >
+      ☰
+    </button>
 
-      <!-- NAVBAR -->
-      <div
-        id="navbar"
-        class="fixed top-0 left-0 w-full bg-white shadow-md p-4 z-[9999]"
-      >
-        <div class="options flex items-center space-x-3 justify-center">
+    <!-- NAVBAR -->
+    <div
+      id="navbar"
+      class="fixed top-0 left-0 w-full bg-white shadow-md z-[9999]
+             transition-transform duration-300"
+    >
+      <div class="options flex flex-wrap items-center gap-3 justify-center p-4">
+        <button
+          id="prev-chapter"
+          class="px-3 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 text-sm font-medium"
+        >
+          ◀ Prev
+        </button>
+
+        <button
+          id="next-chapter"
+          class="px-3 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 text-sm font-medium"
+        >
+          Next ▶
+        </button>
+
+        <div id="size-controls" class="flex items-center space-x-3"></div>
+
+        <div id="scroll-controls" class="flex items-center space-x-2">
+          <label class="text-sm font-medium text-gray-700">
+            Auto Scroll:
+          </label>
+
+          <select
+            id="scroll-speed"
+            class="shadow-sm border-gray-300 rounded-md text-sm"
+          >
+            <option value="1">1</option>
+            <option value="3" selected>3</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+          </select>
 
           <button
-            id="prev-chapter"
+            id="start-scroll"
             class="px-3 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 text-sm font-medium"
           >
-            ◀ Prev
+            Mulai
           </button>
 
           <button
-            id="next-chapter"
-            class="px-3 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 text-sm font-medium"
+            id="stop-scroll"
+            class="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 text-sm font-medium"
+            disabled
           >
-            Next ▶
+            Henti
           </button>
 
-          <div id="size-controls" class="flex items-center space-x-3"></div>
-
-          <div id="scroll-controls" class="flex items-center space-x-2">
-            <label for="scroll-speed" class="text-sm font-medium text-gray-700">
-              Auto Scroll:
-            </label>
-
-            <select
-              id="scroll-speed"
-              class="shadow-sm border-gray-300 rounded-md text-sm"
-            >
-              <option value="1">1</option>
-              <option value="3" selected>3</option>
-              <option value="5">5</option>
-              <option value="10">10</option>
-            </select>
-
-            <button
-              id="start-scroll"
-              class="px-3 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 text-sm font-medium"
-            >
-              Mulai
-            </button>
-
-            <button
-              id="stop-scroll"
-              class="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 text-sm font-medium"
-              disabled
-            >
-              Henti
-            </button>
-
-            <button
-              id="fullscreen-button"
-              class="px-3 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 text-sm font-medium"
-            >
-              Fullscreen
-            </button>
-          </div>
+          <button
+            id="fullscreen-button"
+            class="px-3 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 text-sm font-medium"
+          >
+            Fullscreen
+          </button>
         </div>
       </div>
-
-      <!-- CONTENT -->
-      <div class="wrapper"></div>
     </div>
 
-    <!-- JS FILES -->
+    <!-- CONTENT -->
+    <div class="wrapper pt-24"></div>
+
+    <!-- JS -->
     <script src="https://cdn.jsdelivr.net/gh/RizqullahY/scrape-result-reader-simple-web/js/path-changer.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/RizqullahY/scrape-result-reader-simple-web/js/width-screen.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/RizqullahY/scrape-result-reader-simple-web/js/fullscreen.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/RizqullahY/scrape-result-reader-simple-web/js/autoscroll.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/RizqullahY/scrape-result-reader-simple-web/js/website.js"></script>
-
-    <!-- TOGGLE SCRIPT -->
-    <script>
-      const navbar = document.getElementById("navbar");
-      const toggleBtn = document.getElementById("toggle-navbar");
-
-      let hidden = false;
-
-      toggleBtn.addEventListener("click", () => {
-        hidden = !hidden;
-
-        if (hidden) {
-          navbar.style.transform = "translateY(-100%)";
-          navbar.style.opacity = "0";
-        } else {
-          navbar.style.transform = "translateY(0)";
-          navbar.style.opacity = "1";
-        }
-      });
-    </script>
+    <script src="https://cdn.jsdelivr.net/gh/RizqullahY/scrape-result-reader-simple-web/js/navbar-toggle.js"></script>
   </body>
 </html>
