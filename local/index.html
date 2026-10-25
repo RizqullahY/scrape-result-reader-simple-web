@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>V2 NIH BOY</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0f172a;
+      font-family: Arial, sans-serif;
+      color: #111827;
+    }
+
+    button,
+    select {
+      font: inherit;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* TOGGLE NAVBAR */
+    #toggle-navbar {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 10000;
+      padding: 9px 13px;
+      background: #6366f1;
+      color: #fff;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    #toggle-navbar:hover {
+      background: #4f46e5;
+    }
+
+    /* NAVBAR */
+    #navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 9999;
+      width: 100%;
+      background: #fff;
+      box-shadow: 0 4px 10px rgb(0 0 0 / 15%);
+      transition: transform 0.3s ease;
+    }
+
+    #navbar.navbar-hidden {
+      transform: translateY(-100%);
+    }
+
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 16px;
+      padding-right: 70px;
+    }
+
+    /* BUTTON NAVIGASI */
+    #prev-chapter,
+    #next-chapter,
+    #start-scroll,
+    #stop-scroll,
+    #fullscreen-button {
+      padding: 9px 13px;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    #prev-chapter,
+    #next-chapter,
+    #start-scroll {
+      background: #6366f1;
+    }
+
+    #prev-chapter:hover,
+    #next-chapter:hover,
+    #start-scroll:hover {
+      background: #4f46e5;
+    }
+
+    #stop-scroll {
+      background: #ef4444;
+    }
+
+    #stop-scroll:hover {
+      background: #dc2626;
+    }
+
+    #fullscreen-button {
+      background: #22c55e;
+    }
+
+    #fullscreen-button:hover {
+      background: #16a34a;
+    }
+
+    /* KONTROL UKURAN */
+    #size-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .size-button {
+      padding: 9px 13px;
+      background: #3b82f6;
+      color: #fff;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .size-button:hover {
+      background: #2563eb;
+    }
+
+    .size-button.active {
+      background: #1d4ed8;
+      outline: 2px solid #93c5fd;
+      outline-offset: 1px;
+    }
+
+    /* KONTROL SCROLL */
+    #scroll-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    #scroll-controls label {
+      color: #374151;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    #scroll-speed {
+      padding: 7px 8px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      background: #fff;
+      color: #111827;
+      font-size: 14px;
+    }
+
+    /* KONTEN GAMBAR */
+    .wrapper {
+      width: 100%;
+      margin: 0 auto;
+      padding-top: 100px;
+    }
+
+    .wrapper .chapter-image {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      margin: 0 0 8px;
+      padding: 0;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      #toggle-navbar {
+        top: 10px;
+        right: 10px;
+      }
+
+      .options {
+        gap: 8px;
+        padding: 12px;
+        padding-top: 60px;
+      }
+
+      #size-controls {
+        gap: 6px;
+      }
+
+      .size-button {
+        padding: 7px 10px;
+      }
+
+      #scroll-controls {
+        gap: 6px;
+      }
+
+      #prev-chapter,
+      #next-chapter,
+      #start-scroll,
+      #stop-scroll,
+      #fullscreen-button {
+        padding: 8px 10px;
+      }
+
+      .wrapper {
+        padding-top: 180px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .options {
+        gap: 7px;
+      }
+
+      #scroll-controls {
+        max-width: 100%;
+      }
+
+      #scroll-controls label {
+        width: 100%;
+        text-align: center;
+      }
+
+      #scroll-speed {
+        padding: 6px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- TOGGLE NAVBAR -->
+  <button
+    id="toggle-navbar"
+    type="button"
+    aria-label="Toggle navbar"
+    aria-expanded="true"
+  >☰</button>
+
+  <!-- NAVBAR -->
+  <div id="navbar">
+    <div class="options">
+
+      <button id="prev-chapter" type="button">
+        ◀ Prev
+      </button>
+
+      <button id="next-chapter" type="button">
+        Next ▶
+      </button>
+
+      <div id="size-controls"></div>
+
+      <div id="scroll-controls">
+        <label for="scroll-speed">Auto Scroll:</label>
+
+        <select id="scroll-speed">
+          <option value="1">1</option>
+          <option value="3" selected>3</option>
+          <option value="5">5</option>
+          <option value="10">10</option>
+        </select>
+
+        <button id="start-scroll" type="button">
+          Mulai
+        </button>
+
+        <button id="stop-scroll" type="button" disabled>
+          Henti
+        </button>
+
+        <button id="fullscreen-button" type="button">
+          Fullscreen
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <main class="wrapper"></main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const wrapper = document.querySelector(".wrapper");
+      const navbar = document.getElementById("navbar");
+      const toggleBtn = document.getElementById("toggle-navbar");
+      const sizeControls = document.getElementById("size-controls");
+      const scrollSpeed = document.getElementById("scroll-speed");
+      const startScrollBtn = document.getElementById("start-scroll");
+      const stopScrollBtn = document.getElementById("stop-scroll");
+      const fullscreenBtn = document.getElementById("fullscreen-button");
+
+      let isNavbarOpen = true;
+      let scrollInterval = null;
+
+      // TOGGLE NAVBAR
+      toggleBtn.addEventListener("click", () => {
+        isNavbarOpen = !isNavbarOpen;
+
+        navbar.classList.toggle("navbar-hidden", !isNavbarOpen);
+
+        toggleBtn.textContent = isNavbarOpen ? "☰" : "✕";
+        toggleBtn.setAttribute("aria-expanded", String(isNavbarOpen));
+      });
+
+      // NAVIGASI CHAPTER
+      function changeChapter(delta) {
+        const path = window.location.pathname;
+        const match = path.match(/chapter_(\d+)/);
+
+        if (!match) {
+          alert("Chapter tidak ditemukan di URL!");
+          return;
+        }
+
+        const currentNumberStr = match[1];
+        const newNumber = parseInt(currentNumberStr, 10) + delta;
+
+        if (newNumber < 1) return;
+
+        const paddedNumber = String(newNumber).padStart(
+          currentNumberStr.length,
+          "0"
+        );
+
+        window.location.pathname = path.replace(
+          /chapter_\d+/,
+          `chapter_${paddedNumber}`
+        );
+      }
+
+      document.getElementById("prev-chapter").addEventListener("click", () => {
+        changeChapter(-1);
+      });
+
+      document.getElementById("next-chapter").addEventListener("click", () => {
+        changeChapter(1);
+      });
+
+      // PENGATURAN UKURAN GAMBAR
+      const sizes = [
+        { label: "5", width: "50%" },
+        { label: "6", width: "60%" },
+        { label: "7", width: "70%" },
+        { label: "8", width: "80%" },
+        { label: "9", width: "90%" },
+        { label: "10", width: "100%" }
+      ];
+
+      sizes.forEach(({ label, width }) => {
+        const button = document.createElement("button");
+
+        button.type = "button";
+        button.textContent = label;
+        button.className = "size-button";
+        button.setAttribute("aria-label", `Lebar gambar ${width}`);
+
+        if (width === "100%") {
+          button.classList.add("active");
+        }
+
+        button.addEventListener("click", () => {
+          wrapper.style.width = width;
+          wrapper.style.marginInline = "auto";
+
+          sizeControls.querySelectorAll(".size-button").forEach((item) => {
+            item.classList.toggle("active", item === button);
+          });
+        });
+
+        sizeControls.appendChild(button);
+      });
+
+      // LOAD GAMBAR BERURUTAN
+      function loadImages() {
+        wrapper.replaceChildren();
+
+        let index = 1;
+        let errorCount = 0;
+
+        const MAX_ERROR = 5;
+        const basePath = "./";
+
+        function getCandidates(number) {
+          return [
+            String(number).padStart(3, "0") + ".jpg",
+            String(number).padStart(2, "0") + ".jpg",
+            number + ".jpg"
+          ];
+        }
+
+        function loadNext() {
+          if (errorCount >= MAX_ERROR) {
+            console.log("Stop load: gambar habis");
+            return;
+          }
+
+          const candidates = getCandidates(index);
+          let tried = 0;
+
+          function tryLoad() {
+            if (tried >= candidates.length) {
+              errorCount++;
+              index++;
+              loadNext();
+              return;
+            }
+
+            const img = new Image();
+
+            img.alt = `Halaman ${index}`;
+            img.className = "chapter-image";
+
+            img.onload = () => {
+              errorCount = 0;
+              wrapper.appendChild(img);
+
+              index++;
+              loadNext();
+            };
+
+            img.onerror = () => {
+              tried++;
+              tryLoad();
+            };
+
+            img.src = basePath + candidates[tried];
+          }
+
+          tryLoad();
+        }
+
+        loadNext();
+      }
+
+      loadImages();
+
+      // AUTO SCROLL
+      function stopAutoScroll() {
+        if (scrollInterval !== null) {
+          clearInterval(scrollInterval);
+          scrollInterval = null;
+        }
+
+        startScrollBtn.disabled = false;
+        stopScrollBtn.disabled = true;
+      }
+
+      startScrollBtn.addEventListener("click", () => {
+        if (scrollInterval !== null) return;
+
+        const speed = Number(scrollSpeed.value);
+
+        scrollInterval = setInterval(() => {
+          window.scrollBy({
+            top: speed,
+            left: 0,
+            behavior: "auto"
+          });
+
+          const atBottom =
+            window.innerHeight + window.scrollY >=
+            document.documentElement.scrollHeight - 1;
+
+          if (atBottom) {
+            stopAutoScroll();
+          }
+        }, 30);
+
+        startScrollBtn.disabled = true;
+        stopScrollBtn.disabled = false;
+      });
+
+      stopScrollBtn.addEventListener("click", stopAutoScroll);
+
+      // FULLSCREEN
+      fullscreenBtn.addEventListener("click", async () => {
+        try {
+          if (!document.fullscreenElement) {
+            await document.documentElement.requestFullscreen();
+          } else {
+            await document.exitFullscreen();
+          }
+        } catch (error) {
+          console.error("Gagal mengubah fullscreen:", error);
+        }
+      });
+
+      document.addEventListener("fullscreenchange", () => {
+        fullscreenBtn.textContent = document.fullscreenElement
+          ? "Keluar Fullscreen"
+          : "Fullscreen";
+      });
+    });
+  </script>
+
+</body>
+</html>
